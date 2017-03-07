@@ -14,22 +14,15 @@
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/hai" userId="root" password="123456"/>
 
-        <javaModelGenerator targetPackage="com.hai.model" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java">
-            <property name="enableSubPackages" value="true"/>
-            <property name="trimStrings" value="true"/>
-        </javaModelGenerator>
+        <javaModelGenerator targetPackage="com.hai.model"
+                            targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java"/>
 
-        <sqlMapGenerator targetPackage="mybatis" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/resources/">
-            <property name="enableSubPackages" value="true"/>
-        </sqlMapGenerator>
+        <sqlMapGenerator targetPackage="mybatis"
+                         targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/resources/"/>
 
-        <javaTypeResolver>
-            <property name="forceBigDecimals" value="false"/>
-        </javaTypeResolver>
-
-        <javaClientGenerator targetPackage="com.hai.dao" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java" type="ANNOTATEDMAPPER">
-            <property name="enableSubPackages" value="true"/>
-        </javaClientGenerator>
+        <javaClientGenerator targetPackage="com.hai.dao"
+                             targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java"
+                             type="ANNOTATEDMAPPER"/>
 
         <table schema="Person" tableName="person"/>
         <table schema="Employee" tableName="employee"/>

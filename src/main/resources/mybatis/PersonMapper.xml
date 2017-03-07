@@ -71,7 +71,7 @@
   <sql id="Base_Column_List">
     id, name, sex, age, mobile, hobby, status
   </sql>
-  <select id="selectByExample" parameterType="com.hai.model.PersonExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="com.hai.model.example.PersonExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -95,7 +95,7 @@
     delete from person
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hai.model.PersonExample">
+    <delete id="deleteByExample" parameterType="com.hai.model.example.PersonExample">
     delete from person
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -158,7 +158,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hai.model.PersonExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="com.hai.model.example.PersonExample" resultType="java.lang.Long">
     select count(*) from person
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

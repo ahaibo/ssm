@@ -1,12 +1,13 @@
-package com.hai.dao;
+package com.hai.dao.sqlprovider;
 
 import com.hai.model.Person;
-import com.hai.model.PersonExample.Criteria;
-import com.hai.model.PersonExample.Criterion;
-import com.hai.model.PersonExample;
+import com.hai.model.example.PersonExample;
+import com.hai.model.example.PersonExample.Criteria;
+import com.hai.model.example.PersonExample.Criterion;
+import org.apache.ibatis.jdbc.SQL;
+
 import java.util.List;
 import java.util.Map;
-import org.apache.ibatis.jdbc.SQL;
 
 public class PersonSqlProvider {
 

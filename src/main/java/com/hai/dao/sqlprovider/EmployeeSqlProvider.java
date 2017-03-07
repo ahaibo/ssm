@@ -1,12 +1,13 @@
-package com.hai.dao;
+package com.hai.dao.sqlprovider;
 
 import com.hai.model.Employee;
-import com.hai.model.EmployeeExample.Criteria;
-import com.hai.model.EmployeeExample.Criterion;
-import com.hai.model.EmployeeExample;
+import com.hai.model.example.EmployeeExample;
+import com.hai.model.example.EmployeeExample.Criteria;
+import com.hai.model.example.EmployeeExample.Criterion;
+import org.apache.ibatis.jdbc.SQL;
+
 import java.util.List;
 import java.util.Map;
-import org.apache.ibatis.jdbc.SQL;
 
 public class EmployeeSqlProvider {
 

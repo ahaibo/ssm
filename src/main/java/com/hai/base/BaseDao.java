@@ -1,5 +1,8 @@
 package com.hai.base;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -7,7 +10,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BaseDao {
-    public BaseDao() {
-        System.out.println("Construct BaseDao...");
-    }
+
+    protected Logger logger = Logger.getLogger(BaseDao.class);
+
+    @Autowired
+    protected SqlSessionFactory sqlSessionFactory;
+
 }

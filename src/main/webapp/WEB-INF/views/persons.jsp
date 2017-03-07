@@ -19,7 +19,7 @@
         $(function () {
             $('.person-delete').off().click(function (el) {
                 if (!confirm('Do you really want to delete this person?')) {
-                    return;
+                    return false;
                 }
                 var $this = $(this), pid = $this.attr('pid');
                 if (pid) {

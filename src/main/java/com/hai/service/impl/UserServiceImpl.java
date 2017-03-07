@@ -1,39 +1,52 @@
 package com.hai.service.impl;
 
-import com.hai.dao.IUserDao;
+import com.hai.base.BaseService;
+import com.hai.dao.impl.UserDaoImpl;
 import com.hai.model.User;
 import com.hai.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by as on 2017/3/6.
  */
-@Component("userService")
-public class UserServiceImpl implements IUserService {
+@Service("userService")
+public class UserServiceImpl extends BaseService implements IUserService {
 
     @Autowired
-    private IUserDao userDao;
+    private UserDaoImpl userDao;
 
-    public UserServiceImpl() {
-        System.out.println("Construct UserServiceImpl...");
+    public int add(User user) {
+        System.out.println("\nUserServiceImpl.add...");
+        return this.userDao.add(user);
     }
 
-    public List<User> findAll() {
-        return null;
+    public int delete(User user) {
+        System.out.println("\nUserServiceImpl.delete...");
+        return this.userDao.delete(user);
     }
 
-    public void add(User user) {
-
+    public int deleteById(Integer userId) {
+        System.out.println("\nUserServiceImpl.deleteById...");
+        return this.userDao.deleteById(userId);
     }
 
-    public void update(User user) {
-
+    public int update(User user) {
+        System.out.println("\nUserServiceImpl.update...");
+        return this.userDao.update(user);
     }
 
-    public void delete(User user) {
-
+    public User getById(Integer userId) {
+        System.out.println("\nUserServiceImpl.getById...");
+        return this.userDao.getById(userId);
     }
+
+    public List<User> find() {
+        System.out.println("\nUserServiceImpl.find...");
+        return this.userDao.find();
+    }
+
+
 }

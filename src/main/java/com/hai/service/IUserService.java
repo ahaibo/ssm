@@ -9,11 +9,15 @@ import java.util.List;
  */
 public interface IUserService {
 
-    List<User> findAll();
+    int add(User user);
 
-    void add(User user);
+    int delete(User user);
 
-    void update(User user);
+    int deleteById(Integer userId);
 
-    void delete(User user);
+    int update(User user);
+
+    User getById(Integer userId);
+
+    List<User> find();
 }

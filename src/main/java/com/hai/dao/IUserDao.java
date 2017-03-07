@@ -1,11 +1,22 @@
 package com.hai.dao;
 
-import com.hai.base.BaseDao;
-import org.springframework.stereotype.Component;
+import com.hai.model.User;
+
+import java.util.List;
 
 /**
  * Created by as on 2017/3/6.
  */
-@Component
-public class IUserDao extends BaseDao{
+public interface IUserDao {
+    int add(User user);
+
+    int delete(User user);
+
+    int deleteById(Integer userId);
+
+    int update(User user);
+
+    User getById(Integer userId);
+
+    List<User> find();
 }
