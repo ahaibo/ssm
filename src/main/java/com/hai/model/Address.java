@@ -14,6 +14,21 @@ public class Address {
     private String village;
     private String street;
 
+    public static Address newInstance() {
+        return new Address();
+    }
+
+    public static Address mock() {
+        Address address = Address.newInstance();
+        address.setNation("中国");
+        address.setProvince("四川");
+        address.setCity("成都");
+        address.setArea("高新区");
+        address.setVillage("五木");
+        address.setStreet("南华路");
+        return address;
+    }
+
     public int getId() {
         return id;
     }

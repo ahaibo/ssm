@@ -9,8 +9,11 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-    <context:component-scan base-package="com.hai.controller"/>
+    <!-- 自动扫描该包，使SpringMVC认为包下用了 @controller @ControllerAdvice 注解的类是控制器 -->
+    <context:component-scan base-package="com.hai.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 
     <!--避免IE执行AJAX时，返回JSON出现下载文件-->
     <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -18,37 +21,151 @@
         <property name="supportedMediaTypes">
             <list>
                 <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
             </list>
         </property>
     </bean>
 
     <!--注解映射器 -->
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
 
     <!--启动SpringMVC的注解功能，完成请求和注解POJO的映射-->
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="messageConverters">
-            <ref bean="mappingJackson2HttpMessageConverter"/>
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+    <!--<property name="messageConverters">-->
+    <!--<ref bean="mappingJackson2HttpMessageConverter"/>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--添加转换器-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.hai.converter.DateConverter"/>
+            </set>
         </property>
     </bean>
 
+    <!--<bean id="myObjectMapper" class="com.hai.converter.mapper.CustomObjectMapper"/>-->
+
+    <mvc:annotation-driven conversion-service="conversionService" validator="validatorFactoryBean">
+        <!--<mvc:message-converters>-->
+        <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+        <!--<property name="objectMapper" ref="myObjectMapper"/>-->
+        <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    </mvc:annotation-driven>
+
+    <!--SpringMVC不对静态资源进行拦截，但静态资源是SpringMVC转交给web应用服务器处理的，不能放到WEB-INF目录下-->
     <mvc:default-servlet-handler/>
-    <mvc:annotation-driven/>
+
+    <!--SpringMVC自行处理静态资源，可以放在WEB-INF目录下-->
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/static/"/>
+
+    <!--动态实现语言切换，传参 locale = zh_CN | en_US 等-->
+    <bean id="sessionLocaleResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+
+    <mvc:interceptors>
+        <!--自定义拦截器-->
+        <!--<bean class="com.hai.interceptor.MyFirstInterceptor"/>-->
+        <!--session level locale change interceptor-->
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+        <!--可配置只针对[或不针对]某路径的拦截器-->
+        <mvc:interceptor>
+            <!--<mvc:mapping path="/user"/>-->
+            <mvc:mapping path="/user/**"/>
+            <bean class="com.hai.interceptor.MySecondInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--配置基于Hibernate校验框架的校验器-->
+    <bean id="validatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <!--指定校验使用的资源文件，如果不指定则默认使用classpath下的ValidationMessages.properties-->
+        <property name="validationMessageSource" ref="validateMessageSource"/>
+    </bean>
+
+    <!--校验错误信息：和Java文件分离-->
+    <bean id="validateMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:validate/*</value>
+            </list>
+        </property>
+        <property name="fileEncodings" value="UTF-8"/>
+        <property name="cacheSeconds" value="120"/>
+    </bean>
 
     <!--文件上传-->
-    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8"/>
         <!-- 文件大小最大值 -->
         <property name="maxUploadSize" value="1048576000"/>
         <!-- 内存中的最大值 -->
         <property name="maxInMemorySize" value="40960"/>
+        <!-- 启用是为了推迟文件解析，以便捕获文件大小异常 -->
+        <property name="resolveLazily" value="true"/>
     </bean>
 
-    <!-- 视图解析器-->
+    <!-- 默认视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 配置jsp路径的前缀 -->
         <property name="prefix" value="/WEB-INF/views/"/>
         <!-- 配置jsp路径的后缀 -->
         <property name="suffix" value=".jsp"/>
+        <property name="order" value="2"/>
     </bean>
+
+    <!--自定义视图解析器[for HTML]-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="com.hai.viewresolver.HtmlResourceView"/>
+        <!-- 配置jsp路径的前缀 -->
+        <property name="prefix" value="/WEB-INF/views/html/"/>
+        <!-- 配置jsp路径的后缀 -->
+        <property name="suffix" value=".html"/>
+        <property name="order" value="1"/><!--解析顺序，值越大越后解析-->
+    </bean>
+
+    <!-- 配置一个BeanNameViewResolver视图解析器,使用视图名称来解析视图-->
+    <!--
+    1.实现org.springframework.web.servlet.View接口，如TestView
+    2.在controller中返回视图名时返回 "testView" 即自定义视图的类名首字母小写
+    -->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="10"/>
+    </bean>
+
+    <!--自定义全局异常处理器：只要实现了 HandlerExceptionResolver 就是一个全局处理器-->
+    <bean class="com.hai.exception.CustomExceptionResolver"/>
+
+    <!--全局异常配置-->
+    <!--<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">common/errors/error</prop>
+                <prop key="java.lang.Throwable">common/errors/err</prop>
+            </props>
+        </property>
+        <property name="statusCodes">
+            <props>
+                <prop key="common/errors/error">500</prop>
+                <prop key="common/errors/404">404</prop>
+            </props>
+        </property>
+        &lt;!&ndash; 设置日志输出级别，不定义则默认不输出警告等错误日志信息 &ndash;&gt;
+        <property name="warnLogCategory" value="WARN"></property>
+        &lt;!&ndash; 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 &ndash;&gt;
+        <property name="defaultErrorView" value="common/errors/error"></property>
+        &lt;!&ndash; 默认HTTP状态码 &ndash;&gt;
+        <property name="defaultStatusCode" value="500"></property>
+    </bean>-->
+
+    <!--SSM整合时要使用i18n必须在spring配置文件中配置国际化资源文件，然后在SpringMVC配置文件中另行定义，最后使用的是SpringMVC中的示例-->
+    <bean id="messageSource" parent="bundleMessageSource"/>
+
+    <!--配置可以不经过 controller 直接映射到视图页，注：此标签必须和 mvc:annotation-driven 配合使用，否则其path则不能被其它controller里的视图解析-->
+    <mvc:view-controller path="/success" view-name="common/success"/>
+    <!--<mvc:view-controller path="/i18n" view-name="i18n/i18n1"/>-->
+    <mvc:view-controller path="/user" view-name="user/home"/>
+    <mvc:view-controller path="/i18n2" view-name="i18n/i18n2"/>
+
 </beans>

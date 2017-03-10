@@ -17,7 +17,11 @@
         <property name="location" value="classpath:jdbc.properties"/>
     </bean>-->
 
-    <context:component-scan base-package="com.hai"/>
+    <!--<context:component-scan base-package="com.hai" />-->
+    <context:component-scan base-package="com.hai">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driver}"/>
@@ -87,5 +91,13 @@
 
     <!--使AspectJ注解起作用：自动为匹配的类生成代理对象-->
     <aop:aspectj-autoproxy expose-proxy="false" proxy-target-class="true"/>
+
+    <!--配置国际化资源文件-->
+    <bean id="bundleMessageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->
+        <property name="useCodeAsDefaultMessage" value="true"/>
+        <property name="basename" value="i18n.message"/>
+    </bean>
 
 </beans>

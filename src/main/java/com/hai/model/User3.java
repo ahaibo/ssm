@@ -1,53 +1,43 @@
 package com.hai.model;
 
-import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
  * Created by as on 2017/3/6.
  */
-public class User {
+public class User3 {
     private int id;
-
-    @Size(min = 15, max = 80, message = "{user.age.range}")
     private int age;
-    @NotNull(message = "{msg.notnull}")
     private String name;
     private String sex;
 
-    @Past(message = "{msg.birthday}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date birthday;
 
-    @Email(message = "{msg.email")
     private String email;
-    private Address address;
 
-    public User() {
+    public User3() {
     }
 
-    public User(int age, String name, String sex, Address address) {
+    public User3(int age, String name, String sex) {
         this.age = age;
         this.name = name;
         this.sex = sex;
-        this.address = address;
     }
 
-    public static User newInstance() {
-        return new User();
+    public static User3 newInstance() {
+        return new User3();
     }
 
-    public static User newInstance(int age, String name, String sex, Address address) {
-        return new User(age, name, sex, address);
+    public static User3 newInstance(int age, String name, String sex) {
+        return new User3(age, name, sex);
     }
 
-    public static User mock() {
-        return User.newInstance(20, "hai", "男", Address.mock());
+    public static User3 mock() {
+        return User3.newInstance(20, "hai", "男");
     }
 
     public int getId() {
@@ -96,13 +86,5 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 }

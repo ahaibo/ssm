@@ -5,16 +5,34 @@
 <head>
     <title>Persons</title>
     <style type="text/css">
+        /** {
+            margin: 0;
+            padding: 0;
+            list-style: none
+        }
+
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, form, fieldset, legend, button, input, textarea, pre, th, td, img {
+            font-weight: 400;
+            outline: 0;
+            border: medium none;
+            margin: 0;
+            padding: 0
+        }*/
+
         table {
             border: solid 1px #cccccc;
         }
 
+        /*table thead tr, table tbody tr {
+            border-top: solid 1px #cccccc;
+        }*/
+
         table th, table td {
             border: solid 1px #cccccc;
-            padding: 8px;
+            /*padding: 8px;*/
+            line-height: 40px;
         }
     </style>
-    <script src="/static/js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $('.person-delete').off().click(function (el) {
