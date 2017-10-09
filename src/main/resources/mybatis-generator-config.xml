@@ -4,7 +4,8 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-    <classPathEntry location="C:\Users\as\.m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
+    <classPathEntry
+            location="C:\Users\as\.m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar"/>
 
     <context id="nova2forward" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -12,7 +13,8 @@
             <property name="prefix" value="com.hai"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/hai" userId="root" password="123456"/>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/hai"
+                        userId="root" password="123456"/>
 
         <javaModelGenerator targetPackage="com.hai.model" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java">
             <property name="enableSubPackages" value="true"/>
@@ -28,7 +30,8 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaClientGenerator targetPackage="com.hai.dao" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java" type="ANNOTATEDMAPPER">
+        <javaClientGenerator targetPackage="com.hai.dao" targetProject="D:/Workspaces/IdeaProjects/ssm/src/main/java"
+                             type="ANNOTATEDMAPPER">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 

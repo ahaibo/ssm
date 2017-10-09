@@ -12,11 +12,13 @@
     <!-- 自动扫描该包，使SpringMVC认为包下用了 @controller @ControllerAdvice 注解的类是控制器 -->
     <context:component-scan base-package="com.hai.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <!--避免IE执行AJAX时，返回JSON出现下载文件-->
-    <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <bean id="mappingJackson2HttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="defaultCharset" value="UTF-8"/>
         <property name="supportedMediaTypes">
             <list>
@@ -88,7 +90,8 @@
     <bean id="validateMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>classpath:validate/*</value>
+                <value>validate.validate-common</value>
+                <value>validate.validate-user</value>
             </list>
         </property>
         <property name="fileEncodings" value="UTF-8"/>
