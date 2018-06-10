@@ -31,8 +31,10 @@ import java.util.UUID;
 public class UserController extends BaseController {
 
     private static final String FILE_UPLOAD_PATH = "D:\\Data\\upload\\images";
+
     @Autowired
     private UserServiceImpl userService;
+
     @Autowired
     private ResourceBundleMessageSource messageSource;
 

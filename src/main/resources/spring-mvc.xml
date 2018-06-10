@@ -11,9 +11,9 @@
 
     <!-- 自动扫描该包，使SpringMVC认为包下用了 @controller @ControllerAdvice 注解的类是控制器 -->
     <context:component-scan base-package="com.hai.controller" use-default-filters="false">
+        <!--防止被多次实例化-->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <!--避免IE执行AJAX时，返回JSON出现下载文件-->
